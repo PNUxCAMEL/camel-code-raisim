@@ -7,28 +7,32 @@ import CAMELThread
 import SimplePendulumRobot
 import SimplePendulumPDController
 import SimplePendulumPIDController
+import SimplePendulumPlot
 from PySide6.QtWidgets import QApplication
 """
 dT       : Discrete time of your system
 """
 
-## new Simulation class
 app = QApplication(sys.argv)
-
+## new Simulation class
 sim = Simulation.Simulation()
 sim.setDT(0.005)
 sim.setSimulationDuration(duration = 100.0)
 sim.setFastSimulation(True)
-# sim.setFastSimulation(False)
+sim.setDataPlot(True)
 sim.initializeServer()
 
-## new Robot class
+## set Robot class
 robot = SimplePendulumRobot.SimplePendulumRobot(sim)
 
-## new Controller class
+## set Controller class
 controller = SimplePendulumPDController.SimplePendulumPDController(robot)
 # controller = SimplePendulumPIDController.SimplePendulumPIDController(robot)
 sim.setController(controller)
+
+## set Plot class
+plot = SimplePendulumPlot.SimplePendulumPlot(sim)
+sim.setPlot(plot)
 
 ## new CAMELThread class
 simulationThread = CAMELThread.CAMELThread(sim)

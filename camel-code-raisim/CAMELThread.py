@@ -14,10 +14,8 @@ class CAMELThread (threading.Thread):
       self.ui.show()
 
    def run(self):
-      totalTime = 0
       while(True):
          if(self.ui.getIsButtonPressed()):
-            startTime = time.time_ns()
             if(self.sim.getSimulationDuration() > self.simDurationTime):
                # print("simulation time : ", self.sim.getTime())
                self.simDurationTime += self.sim.getDT()
@@ -26,12 +24,14 @@ class CAMELThread (threading.Thread):
                   self.fastSimulation()
                else:
                   self.realTimeSimulation()
-               currentTime = time.time_ns()
-               totalTime += (currentTime-startTime)*1e-9
-
+                  
+               if(self.sim.isDataPlot):   
+                  self.sim.getPlot().getData()
+               
             else:
-               # plot을 해야 함
-               print("elapsed time :", totalTime)
+               if(self.sim.isDataPlot):
+                  self.sim.getPlot().show()
+               
                print("simulation time : ", self.sim.getTime())
                self.ui.setIsButtonPressed(False)
                self.simDurationTime = 0

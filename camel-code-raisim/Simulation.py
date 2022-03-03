@@ -18,9 +18,15 @@ class Simulation:
         self.world = raisim.World()
         self.server = raisim.RaisimServer(self.world)
         self.ground = self.world.addGround()
-        
-    def setDT(self, dT):
-        self.world.setTimeStep(dT)
+
+    def integrate(self):
+        self.world.integrate()
+
+    def integration1(self):
+        self.world.integrate1()
+
+    def integration2(self):
+        self.world.integrate2()
 
     def initializeServer(self):
         self.server.launchServer(8080)
@@ -34,23 +40,29 @@ class Simulation:
     def setController(self, controller):
         self.controller = controller
 
+    def setPlot(self, plot):
+        self.plot = plot
+
+    def setDT(self, dT):
+        self.world.setTimeStep(dT)
+
     def setSimulationDuration(self, duration):
         self.simulationDuration = duration
 
     def setFastSimulation(self, booleanValue):
         self.isFastSimulation = booleanValue
 
-    def getTime(self):
-        return self.world.getWorldTime()
+    def setDataPlot(self, booleanValue):
+        self.isDataPlot = booleanValue
 
-    def integrate(self):
-        self.world.integrate()
+    def getRobot(self):
+        return self.robot
 
-    def integration1(self):
-        self.world.integrate1()
+    def getController(self):
+        return self.controller
 
-    def integration2(self):
-        self.world.integrate2()
+    def getPlot(self):
+        return self.plot
 
     def getDT(self):
         return self.world.getTimeStep()
@@ -58,3 +70,5 @@ class Simulation:
     def getSimulationDuration(self):
         return self.simulationDuration
 
+    def getTime(self):
+        return self.world.getWorldTime()

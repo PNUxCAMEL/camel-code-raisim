@@ -25,5 +25,5 @@ class UI(QMainWindow):
     def getIsButtonPressed(self):
         return self.isButtonPressed
     
-    def setIsButtonPressed(self, boolean):
-        self.isButtonPressed = boolean
+    def setIsButtonPressed(self, booleanValue):
+        self.isButtonPressed = booleanValue

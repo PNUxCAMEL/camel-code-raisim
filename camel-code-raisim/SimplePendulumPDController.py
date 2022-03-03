@@ -46,3 +46,15 @@ class SimplePendulumPDController(PDController.PDController):
 
     def setTorqueLimit(self, torqueLimit):
         self.torqueLimit = torqueLimit
+
+    def getPosition(self):
+        return self.position
+
+    def getVelocity(self):
+        return self.velocity
+
+    def getDesiredPosition(self):
+        return self.desiredPosition
+    
+    def getDesiredVelocity(self):
+        return self.desiredVelocity
