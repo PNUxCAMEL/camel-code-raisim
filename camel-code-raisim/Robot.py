@@ -36,7 +36,6 @@ class Robot:
     def getFrameAngularVelocity(self, frameName):
         return self.robot.getFrameAngularVelocity(self.getFrameIdx(frameName))
 
-
     def getBodyNames(self):
         return self.robot.getBodyNames()
 

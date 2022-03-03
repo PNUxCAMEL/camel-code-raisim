@@ -1,5 +1,6 @@
 import threading
 import time
+import UI
 
 # TODO : time.sleep is not working well in windows 10. (kernel problem.)
 
@@ -7,12 +8,34 @@ class CAMELThread (threading.Thread):
    def __init__(self, sim):
       threading.Thread.__init__(self)
       self.sim = sim
+      self.ui = UI.UI()
+      self.iteration = 0
+      self.simDurationTime = 0
+      self.ui.show()
 
    def run(self):
-      if(self.sim.isFastSimulation):
-         self.fastSimulation()
-      else:
-         self.realTimeSimulation()
+      totalTime = 0
+      while(True):
+         if(self.ui.getIsButtonPressed()):
+            startTime = time.time_ns()
+            if(self.sim.getSimulationDuration() > self.simDurationTime):
+               # print("simulation time : ", self.sim.getTime())
+               self.simDurationTime += self.sim.getDT()
+               self.iteration += 1
+               if(self.sim.isFastSimulation):
+                  self.fastSimulation()
+               else:
+                  self.realTimeSimulation()
+               currentTime = time.time_ns()
+               totalTime += (currentTime-startTime)*1e-9
+
+            else:
+               # plot을 해야 함
+               print("elapsed time :", totalTime)
+               print("simulation time : ", self.sim.getTime())
+               self.ui.setIsButtonPressed(False)
+               self.simDurationTime = 0
+         
       
    def delay(self, delayTime):   # should be changed later.
       startTime = time.time_ns()
@@ -22,14 +45,12 @@ class CAMELThread (threading.Thread):
             break
 
    def fastSimulation(self):
-      while(True):
-         # print("current time :", self.sim.getTime())
-         self.sim.controller.doControl()
-         self.sim.integrate()
+      # print("current time :", self.sim.getTime())
+      self.sim.controller.doControl()
+      self.sim.integrate()
 
    def realTimeSimulation(self):
-      while(True):
-         self.delay(0.0025)
-         # print("current time :", self.sim.getTime())
-         self.sim.controller.doControl()
-         self.sim.integrate()
+      self.delay(self.sim.getDT() / 2)
+      # print("current time :", self.sim.getTime())
+      self.sim.controller.doControl()
+      self.sim.integrate()

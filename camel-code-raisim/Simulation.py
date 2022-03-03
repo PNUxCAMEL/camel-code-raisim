@@ -14,16 +14,13 @@ raisim.World.setLicenseFile(licensePath)
 
 class Simulation:
 
-    def __init__(self, dT):
-        self.dT = dT
-        self.buildSimulationWorld()
-
-    def buildSimulationWorld(self):
+    def __init__(self):
         self.world = raisim.World()
-        self.world.setTimeStep(self.dT)
         self.server = raisim.RaisimServer(self.world)
         self.ground = self.world.addGround()
-        self.initializeServer()
+        
+    def setDT(self, dT):
+        self.world.setTimeStep(dT)
 
     def initializeServer(self):
         self.server.launchServer(8080)
@@ -61,4 +58,3 @@ class Simulation:
     def getSimulationDuration(self):
         return self.simulationDuration
 
-    
