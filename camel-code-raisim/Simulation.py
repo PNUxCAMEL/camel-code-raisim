@@ -1,6 +1,5 @@
 import sys
 
-# TODO : make UI and play button which works with simulaitonDuration
 
 """
 path of bin and license should be set by user. 

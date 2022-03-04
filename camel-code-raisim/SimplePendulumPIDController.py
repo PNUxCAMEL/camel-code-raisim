@@ -4,8 +4,9 @@ import numpy as np
 class SimplePendulumPIDController(PIDController.PIDController):
     def __init__(self, robot):
         super().__init__(robot)
-        self.setPIDGain(150, 1, 15)
+        self.setPIDGain(150, 1, 30)
         self.setTrajectory(desiredPosition=-1.57, desiredVelocity=0.0)
+        self.setTorqueLimit(50)
         
     # override
     def doControl(self):
@@ -32,4 +33,24 @@ class SimplePendulumPIDController(PIDController.PIDController):
         
     # override
     def setControlInput(self):
-        self.robot.setGeneralizedForce(np.array([self.torque]))
+        if (self.torqueLimit < self.torque):
+            self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
+        elif(-self.torqueLimit > self.torque):
+            self.robot.setGeneralizedForce(np.array([-self.torqueLimit]))
+        else:
+            self.robot.setGeneralizedForce(np.array([self.torque]))        
+
+    def setTorqueLimit(self, torqueLimit):
+        self.torqueLimit = torqueLimit
+
+    def getPosition(self):
+        return self.position
+
+    def getVelocity(self):
+        return self.velocity
+
+    def getDesiredPosition(self):
+        return self.desiredPosition
+    
+    def getDesiredVelocity(self):
+        return self.desiredVelocity

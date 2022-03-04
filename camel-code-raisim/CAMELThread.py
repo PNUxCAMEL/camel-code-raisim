@@ -11,13 +11,11 @@ class CAMELThread (threading.Thread):
       self.ui = UI.UI()
       self.iteration = 0
       self.simDurationTime = 0
-      self.ui.show()
 
    def run(self):
       while(True):
          if(self.ui.getIsButtonPressed()):
             if(self.sim.getSimulationDuration() > self.simDurationTime):
-               # print("simulation time : ", self.sim.getTime())
                self.simDurationTime += self.sim.getDT()
                self.iteration += 1
                if(self.sim.isFastSimulation):
@@ -26,11 +24,12 @@ class CAMELThread (threading.Thread):
                   self.realTimeSimulation()
                   
                if(self.sim.isDataPlot):   
-                  self.sim.getPlot().getData()
+                  self.sim.getPlot().setData()
                
             else:
                if(self.sim.isDataPlot):
-                  self.sim.getPlot().show()
+                  self.ui.plot(self.sim.getPlot().t,self.sim.getPlot().data1,self.sim.getPlot().t,self.sim.getPlot().data2)
+                  
                
                print("simulation time : ", self.sim.getTime())
                self.ui.setIsButtonPressed(False)

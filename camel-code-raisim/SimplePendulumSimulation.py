@@ -14,11 +14,12 @@ dT       : Discrete time of your system
 """
 
 app = QApplication(sys.argv)
+
 ## new Simulation class
 sim = Simulation.Simulation()
 sim.setDT(0.005)
-sim.setSimulationDuration(duration = 100.0)
-sim.setFastSimulation(True)
+sim.setSimulationDuration(duration = 1.0)
+sim.setFastSimulation(False)
 sim.setDataPlot(True)
 sim.initializeServer()
 
@@ -26,8 +27,8 @@ sim.initializeServer()
 robot = SimplePendulumRobot.SimplePendulumRobot(sim)
 
 ## set Controller class
-controller = SimplePendulumPDController.SimplePendulumPDController(robot)
-# controller = SimplePendulumPIDController.SimplePendulumPIDController(robot)
+# controller = SimplePendulumPDController.SimplePendulumPDController(robot)
+controller = SimplePendulumPIDController.SimplePendulumPIDController(robot)
 sim.setController(controller)
 
 ## set Plot class

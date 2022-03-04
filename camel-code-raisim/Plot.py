@@ -9,9 +9,5 @@ class Plot:
         self.totalPlotTime = self.sim.getSimulationDuration()
 
     @abstractmethod
-    def show(self):
-        pass
-
-    @abstractmethod
     def getData(self):
         pass
