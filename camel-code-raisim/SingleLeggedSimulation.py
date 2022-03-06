@@ -1,10 +1,10 @@
 import SingleLeggedRobot
-import Simulation
+from CAMELRaisimLib import Simulation
 
 urdfPath = "C:/Users/Jaehoon/raisimLib/rsc/camel/camel_single_leg_urdf.urdf"
 name = 'cuteLeg'
 dT = 0.005
-sim = Simulation.Simulation(dT)
+sim = Simulation(dT)
 robot = SingleLeggedRobot.SingleLeggedRobot(sim, urdfPath, name)
 
 

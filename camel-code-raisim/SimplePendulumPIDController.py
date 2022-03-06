@@ -1,7 +1,7 @@
-import PIDController
+from CAMELController import PIDController
 import numpy as np
 
-class SimplePendulumPIDController(PIDController.PIDController):
+class SimplePendulumPIDController(PIDController):
     def __init__(self, robot):
         super().__init__(robot)
         self.setPIDGain(150, 1, 30)

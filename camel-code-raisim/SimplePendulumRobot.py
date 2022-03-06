@@ -1,8 +1,4 @@
-import sys
-libPath = 'C:/Users/Jaehoon/raisimLib/CAMEL-code/lib'
-sys.path.append(libPath)
-
-import Robot
+from CAMELRaisimLib import Robot
 import numpy as np
 import math
 
@@ -15,7 +11,7 @@ name     : Name of robot
 [ bodies]    0: "base" 1: "wire"
 [Generalized Coordinate]  0: "linear_guide" 1: "hip_pitch" 2: "knee_pitch"
 """
-class SimplePendulumRobot(Robot.Robot):
+class SimplePendulumRobot(Robot):
 
     def __init__(self, sim):
         urdfPath = "C:/Users/Jaehoon/raisimLib/CAMEL-code/rsc/camel_simple_pendulum.urdf"

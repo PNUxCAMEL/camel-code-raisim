@@ -1,44 +1,42 @@
 import sys
-libPath = 'C:/Users/Jaehoon/raisimLib/CAMEL-code/lib'
-sys.path.append(libPath)
-
-import Simulation
-import CAMELThread
-import SimplePendulumRobot
-import SimplePendulumPDController
-import SimplePendulumPIDController
-import SimplePendulumPlot
+from CAMELRaisimLib import Simulation, CAMELThread
 from PySide6.QtWidgets import QApplication
-"""
-dT       : Discrete time of your system
-"""
 
-app = QApplication(sys.argv)
+from SimplePendulumRobot import SimplePendulumRobot
+from SimplePendulumPDController import SimplePendulumPDController
+from SimplePendulumPIDController import SimplePendulumPIDController
+from SimplePendulumPlot import SimplePendulumPlot
 
-## new Simulation class
-sim = Simulation.Simulation()
-sim.setDT(0.005)
-sim.setSimulationDuration(duration = 1.0)
-sim.setFastSimulation(False)
-sim.setDataPlot(True)
-sim.initializeServer()
+class SimplePendulumSimulation(Simulation):
+    def __init__(self):
+        super().__init__()
+        self.setDT(0.005)
+        self.setSimulationDuration(duration = 1.0)
+        self.setFastSimulation(False)
+        self.setDataPlot(True)
+        self.initializeServer()
 
-## set Robot class
-robot = SimplePendulumRobot.SimplePendulumRobot(sim)
+        # set robot class
+        self.robot = SimplePendulumRobot(self)
+        
+        # set controller 
+        self.PDcontroller = SimplePendulumPDController(self.robot)
+        self.PDcontroller.setPDGain(200,20)
+        self.PIDcontroller = SimplePendulumPIDController(self.robot)
+        self.PIDcontroller.setPIDGain(200,1,20)
+        self.setController(self.PDcontroller)
+        
+        # set plot
+        self.plot = SimplePendulumPlot(self)
+        self.setPlot(self.plot)
 
-## set Controller class
-# controller = SimplePendulumPDController.SimplePendulumPDController(robot)
-controller = SimplePendulumPIDController.SimplePendulumPIDController(robot)
-sim.setController(controller)
+        # set thread
+        self.thread = CAMELThread(self)
 
-## set Plot class
-plot = SimplePendulumPlot.SimplePendulumPlot(sim)
-sim.setPlot(plot)
+    def run(self):
+        self.thread.start()
 
-## new CAMELThread class
-simulationThread = CAMELThread.CAMELThread(sim)
-
-# run simulation
-simulationThread.start()
-
-app.exec()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    SimplePendulumSimulation().run()
+    app.exec()

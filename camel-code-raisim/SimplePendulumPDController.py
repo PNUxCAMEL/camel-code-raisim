@@ -1,11 +1,7 @@
-import sys
-libPath = 'C:/Users/Jaehoon/raisimLib/CAMEL-code/lib'
-sys.path.append(libPath)
-
-import PDController
+from CAMELController import PDController
 import numpy as np
 
-class SimplePendulumPDController(PDController.PDController):
+class SimplePendulumPDController(PDController):
 
     def __init__(self, robot):
         super().__init__(robot)

@@ -1,7 +1,7 @@
-import Plot
+from CAMELRaisimLib import Plot
 import numpy as np
 
-class SimplePendulumPlot(Plot.Plot):
+class SimplePendulumPlot(Plot):
     def __init__(self, simulation):
         super().__init__(simulation)
         self.totalDataNum = 4
@@ -12,7 +12,7 @@ class SimplePendulumPlot(Plot.Plot):
         self.data4 = np.array([])
         self.t = np.array([])
 
-    #override
+    # override
     def setData(self):
         self.t = np.append(self.t, [self.sim.getTime()])
         self.data1 = np.append(self.data1, [self.controller.getDesiredPosition()])
