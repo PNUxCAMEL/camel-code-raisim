@@ -1,6 +1,7 @@
 from CAMELRaisimLib import Robot
 import numpy as np
 import math
+import os
 
 """
 path of the robot's urdf file and name of the robot should be set by user.
@@ -14,7 +15,7 @@ name     : Name of robot
 class SimplePendulumRobot(Robot):
 
     def __init__(self, sim):
-        urdfPath = "C:/Users/Jaehoon/raisimLib/CAMEL-code/rsc/camel_simple_pendulum.urdf"
+        urdfPath = os.path.dirname(os.path.realpath(__file__))+"/rsc/camel_simple_pendulum.urdf"
         name = 'cutePendulum'
         super().__init__(sim, urdfPath, name)
         self.initialize()

@@ -21,10 +21,10 @@ class SimplePendulumSimulation(Simulation):
         
         # set controller 
         self.PDcontroller = SimplePendulumPDController(self.robot)
-        self.PDcontroller.setPDGain(200,20)
+        self.PDcontroller.setPDGain(500,20)
         self.PIDcontroller = SimplePendulumPIDController(self.robot)
         self.PIDcontroller.setPIDGain(200,1,20)
-        self.setController(self.PDcontroller)
+        self.setController(self.PIDcontroller)
         
         # set plot
         self.plot = SimplePendulumPlot(self)
