@@ -12,6 +12,7 @@ class SimplePendulumIDController(InverseDynamicsController):
     def setPDGain(self, PGain, DGain):
         return super().setPDGain(PGain, DGain)
     
+    # override
     def doControl(self):
         self.updateState()
         self.computeControlInput()
@@ -20,23 +21,27 @@ class SimplePendulumIDController(InverseDynamicsController):
     def setTrajectory(self, desiredPosition, desiredVelocity, desiredAcceleration):
         return super().setTrajectory(desiredPosition, desiredVelocity, desiredAcceleration)
 
+    # override
     def updateState(self):
         self.position = self.robot.getQ()
         self.velocity = self.robot.getQD()        
         self.updateMassMatrix()
         self.updateGravityTerm()
     
+    # override
     def updateMassMatrix(self):
         self.massMatrix = self.robot.getMass() * self.robot.getWireLength()**2
     
     def updateGravityTerm(self):
         self.gravityTerm = self.robot.getMass() * -9.81 * self.robot.getWireLength() * math.sin(self.position)
     
+    # override
     def computeControlInput(self):
         self.positionError = self.desiredPosition - self.position
         self.velocityError = self.desiredVelocity - self.velocity
         self.torque = self.massMatrix * (self.desiredAcceleration + self.PGain * self.positionError + self.DGain * self.velocityError) + self.gravityTerm
 
+    # override
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
             self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
