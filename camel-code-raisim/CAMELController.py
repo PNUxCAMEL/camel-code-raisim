@@ -16,8 +16,9 @@ class PDController(Controller):
     def doControl(self):
         return super().doControl()
 
-    def setTrajectory(self):
-        return super().setTrajectory()
+    def setTrajectory(self, desiredPosition, desiredVelocity):
+        self.desiredPosition = desiredPosition
+        self.desiredVelocity = desiredVelocity
 
     def updateState(self):
         return super().updateState()
@@ -44,8 +45,8 @@ class PIDController(PDController):
     def doControl(self):
         return super().doControl()
     
-    def setTrajectory(self):
-        return super().setTrajectory()
+    def setTrajectory(self, desiredPosition, desiredVelocity):
+        return super().setTrajectory(desiredPosition, desiredVelocity)
     
     def updateState(self):
         return super().updateState()
@@ -56,6 +57,40 @@ class PIDController(PDController):
     def setControlInput(self):
         return super().setControlInput()
     
+
+class InverseDynamicsController(Controller):
+    def __init__(self, robot):
+        super().__init__(robot)
+        self.positionError = 0
+        self.differentialError = 0
+
+    def setPDGain(self, PGain, DGain):
+        self.PGain = PGain
+        self.DGain = DGain
+
+    def doControl(self):
+        return super().doControl()
+
+    def setTrajectory(self, desiredPosition, desiredVelocity, desiredAcceleration):
+        self.desiredPosition = desiredPosition
+        self.desiredVelocity = desiredVelocity
+        self.desiredAcceleration = desiredAcceleration
+
+    def updateState(self):
+        return super().updateState()
+
+    @abstractmethod
+    def updateMassMatrix(self):
+        pass
+
+    def computeControlInput(self):
+        return super().computeControlInput()
+    
+    def setControlInput(self):
+        return super().setControlInput()
+    
+    
+        
 
 class MPCController(Controller):
     def __init__(self, robot):

@@ -2,9 +2,9 @@ import numpy as np
 
 class GradientDescent:
     def __init__(self):
-        self.maximumIteration = 1000
         self.stepSize = 0.01
-        self.terminateCondition = 1e-3
+        self.maximumIteration = 1000
+        self.terminateCondition = 1e-6
         self.delta = 1e-6
         self.iteration = 0
         self.terminateFlag = False
@@ -41,7 +41,7 @@ class GradientDescent:
             self.terminateReason = "maximum iteration"
             self.terminateFlag = True
         elif(self.RMSgradient < self.terminateCondition):
-            self.terminateReason = "under terminate conditon"
+            self.terminateReason = "terminate conditon"
             self.terminateFlag = True
 
     def solve(self):

@@ -8,9 +8,9 @@ path of the robot's urdf file and name of the robot should be set by user.
 urdfPath : Path and name of 'robot.urdf' file.
 name     : Name of robot
 
-[ frames]    0: "fixed" 1: "top_pitch"
-[ bodies]    0: "base" 1: "wire"
-[Generalized Coordinate]  0: "linear_guide" 1: "hip_pitch" 2: "knee_pitch"
+[ frames]                 0: "fixed"     1: "top_pitch"
+[ bodies]                 0: "base"      1: "wire"
+[Generalized Coordinate]  0: "top_pitch"
 """
 class SimplePendulumRobot(Robot):
 
@@ -19,6 +19,8 @@ class SimplePendulumRobot(Robot):
         name = 'cutePendulum'
         super().__init__(sim, urdfPath, name)
         self.initialize()
+        self.mass = 5.0
+        self.wireLength = 0.575
 
     # override
     def initialize(self):
@@ -27,7 +29,13 @@ class SimplePendulumRobot(Robot):
         self.setState(initialPosition, initialVelocity)
         
     def getQ(self):
-        return self.getGeneralizedCoordinate()[0]   # hip joint angular position , 0: top_pitch
+        return self.getGeneralizedCoordinate()[0]       # 0: top_pitch
 
     def getQD(self):
-        return self.getGeneralizedVelocity()[0]   # knee joint angular position
+        return self.getGeneralizedVelocity()[0]
+
+    def getMass(self):
+        return self.mass
+
+    def getWireLength(self):
+        return self.wireLength

@@ -17,8 +17,7 @@ class SimplePendulumPDController(PDController):
 
     # override
     def setTrajectory(self, desiredPosition, desiredVelocity):
-        self.desiredPosition = desiredPosition
-        self.desiredVelocity = desiredVelocity
+        return super().setTrajectory(desiredPosition, desiredVelocity)
 
     # override
     def updateState(self):

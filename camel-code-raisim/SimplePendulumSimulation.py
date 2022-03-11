@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QApplication
 from SimplePendulumRobot import SimplePendulumRobot
 from SimplePendulumPDController import SimplePendulumPDController
 from SimplePendulumPIDController import SimplePendulumPIDController
+from SimplePendulumIDController import SimplePendulumIDController
 from SimplePendulumPlot import SimplePendulumPlot
 
 class SimplePendulumSimulation(Simulation):
@@ -21,10 +22,12 @@ class SimplePendulumSimulation(Simulation):
         
         # set controller 
         self.PDcontroller = SimplePendulumPDController(self.robot)
-        self.PDcontroller.setPDGain(500,20)
+        self.PDcontroller.setPDGain(400,30)
         self.PIDcontroller = SimplePendulumPIDController(self.robot)
         self.PIDcontroller.setPIDGain(200,1,20)
-        self.setController(self.PIDcontroller)
+        self.IDcontroller = SimplePendulumIDController(self.robot)
+
+        self.setController(self.IDcontroller)
         
         # set plot
         self.plot = SimplePendulumPlot(self)
