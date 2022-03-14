@@ -1,12 +1,14 @@
 import math
 import numpy as np
 from CAMELController import InverseDynamicsController
+from CAMELTrajectoryGenerator import ThirdOrderPolynomialTrajectory1D
 
 class SimplePendulumIDController(InverseDynamicsController):
     def __init__(self, robot):
         super().__init__(robot)
-        self.setPDGain(PGain = 200.0, DGain= 25.0)
-        self.setTrajectory(desiredPosition=1.57, desiredVelocity=0.0, desiredAcceleration=0.0)
+        self.setPDGain(PGain = 200.0, DGain= 20.0)
+        self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
+        self.trajectoryGenerator.updateTrajectory(currentPosition=self.robot.getQ(), goalPosition= 2.57, currentTime= self.robot.getTime(), timeDuration=1.0)
         self.setTorqueLimit(50)
 
     def setPDGain(self, PGain, DGain):
@@ -15,6 +17,7 @@ class SimplePendulumIDController(InverseDynamicsController):
     # override
     def doControl(self):
         self.updateState()
+        self.setTrajectory(desiredPosition=self.trajectoryGenerator.getPostionTrajectory(self.robot.getTime()), desiredVelocity=self.trajectoryGenerator.getVelocityTrajectory(self.robot.getTime()), desiredAcceleration=self.trajectoryGenerator.getAccelerationTrajectory(self.robot.getTime()))
         self.computeControlInput()
         self.setControlInput()
     
@@ -39,7 +42,9 @@ class SimplePendulumIDController(InverseDynamicsController):
     def computeControlInput(self):
         self.positionError = self.desiredPosition - self.position
         self.velocityError = self.desiredVelocity - self.velocity
-        self.torque = self.massMatrix * (self.desiredAcceleration + self.PGain * self.positionError + self.DGain * self.velocityError) + self.gravityTerm
+        self.torque = self.massMatrix * (self.desiredAcceleration + self.PGain * self.positionError + self.DGain * self.velocityError) - self.gravityTerm
+        print("torque : ", self.torque)
+        
 
     # override
     def setControlInput(self):

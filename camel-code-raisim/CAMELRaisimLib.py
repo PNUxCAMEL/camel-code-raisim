@@ -176,6 +176,9 @@ class Robot:
     def setGeneralizedForce(self, force):
         return self.robot.setGeneralizedForce(force)
 
+    def getTime(self):
+        return self.sim.getTime()
+
 
 class Controller:
 
