@@ -1,6 +1,6 @@
 import numpy as np
 
-class GradientDescent:
+class GradientDescentSolver:
     def __init__(self):
         self.stepSize = 0.01
         self.maximumIteration = 1000
@@ -26,11 +26,12 @@ class GradientDescent:
         self.dim = np.size(initialPoint)
         self.gradient = np.zeros(self.dim)
     
-    def computeGradient(self):        
+    def computeGradient(self):
+        functionValue = self.objectiveFunction(self.x)
         for i in range(self.dim):
             temp_x = self.x.copy()
             temp_x[i] += self.delta 
-            self.gradient[i] = (self.objectiveFunction(temp_x) - self.objectiveFunction(self.x)) / self.delta
+            self.gradient[i] = (self.objectiveFunction(temp_x) - functionValue) / self.delta
         self.RMSgradient = (self.gradient.dot(self.gradient) / self.dim) ** (1/2)
 
     def updateVariables(self):
