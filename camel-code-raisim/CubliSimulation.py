@@ -3,14 +3,14 @@ from CAMELRaisimLib import Simulation, CAMELThread
 from PySide6.QtWidgets import QApplication
 
 from CubliRobot import CubliRobot
-from CubliPDControll import CubliPDController
+from CubliPDControll_noTrajactory import CubliPDController
 from CubliPlot import CubliPlot
 
 class CubliSimulation(Simulation):
     def __init__(self):
         super().__init__()
         self.setDT(0.005)
-        self.setSimulationDuration(duration = 1.0)
+        self.setSimulationDuration(duration = 10.0)
         self.setFastSimulation(False)
         self.setDataPlot(True)
         self.initializeServer()
@@ -19,17 +19,17 @@ class CubliSimulation(Simulation):
         self.robot = CubliRobot(self)
         
         # set controller 
-        self.PDcontroller = CubliPDController(robot=self.robot)  #???
-        self.PDcontroller .setPDGain(9,1)
+        self.PDcontroller = CubliPDController(robot=self.robot)
+        self.PDcontroller .setPDGain(-20,-300)
 
-        self.setController(self.PDcontroller)  #???
+        self.setController(self.PDcontroller)
         # set plot
         self.plot = CubliPlot(self)
         self.setPlot(self.plot)
 
         # set thread
         self.thread = CAMELThread(self)
-
+    
     def run(self):
         self.thread.start()
 

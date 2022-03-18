@@ -1,5 +1,4 @@
 from CAMELController import PDController
-from CAMELTrajectoryGenerator import ThirdOrderPolynomialTrajectory1D
 import numpy as np
 
 class CubliPDController(PDController):
@@ -7,16 +6,13 @@ class CubliPDController(PDController):
     def __init__(self, robot):
         super().__init__(robot)
         self.setPDGain(PGain=100.0, DGain=10.0)
-        self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
         self.updateState()
-        self.trajectoryGenerator.updateTrajectory(self.position, 0.0, self.robot.getTime(), 20.0)
+        self.setTrajectory(0.0, 0.0)
         self.setTorqueLimit(10.0)
 
     # override
     def doControl(self):
         self.updateState()
-        self.setTrajectory(desiredPosition=self.trajectoryGenerator.getPostionTrajectory(self.robot.getTime()), desiredVelocity=self.trajectoryGenerator.getVelocityTrajectory(self.robot.getTime()))
-        # print(self.velocity)
         self.computeControlInput()
         self.setControlInput()
 

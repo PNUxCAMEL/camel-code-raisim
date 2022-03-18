@@ -65,7 +65,7 @@
     
     <inertial>
       <mass value="1"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.00102" iyz="0.0" izz="1.0"/>
     </inertial>
 
     <collision>
@@ -91,9 +91,18 @@
       </geometry>
       <material name="black"/>
     </visual>
+    
+    <visual>
+      <origin rpy="0 0 0" xyz="0.1 0 0.4"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.05"/>
+      </geometry>
+      <material name="Aquamarine"/>
+    </visual>
+
      <inertial>
-      <mass value="1"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <mass value="0.335"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.00005" iyz="0.0" izz="1.0"/>
     </inertial>
   </link>
 
