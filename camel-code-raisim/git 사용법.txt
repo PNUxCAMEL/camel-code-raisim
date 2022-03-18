@@ -1,0 +1,7 @@
+0. clone 하는 법 : vs code 왼쪽 나뭇가지 누르고 clone
+
+1. branch 확인 : git branch
+2. branch 이동 : git checkout 이동할branch
+3. add : git add .
+4. commit : git commit -m "Verb(-ing) + Objective" Ex. initialize hwayoung branch
+5. push : git push -u origin hwayoung
