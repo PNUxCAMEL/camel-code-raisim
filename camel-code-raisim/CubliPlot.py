@@ -4,12 +4,11 @@ import numpy as np
 class CubliPlot(Plot):
     def __init__(self, simulation):
         super().__init__(simulation)
-        self.totalDataNum = 3
+        self.totalDataNum = 2
 
         self.t = np.array([])
         self.data1 = np.array([])
         self.data2 = np.array([])
-        self.data3 = np.array([])
         
     # override
     def setData(self):
