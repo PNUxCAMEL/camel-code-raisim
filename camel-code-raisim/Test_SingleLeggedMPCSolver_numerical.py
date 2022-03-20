@@ -1,35 +1,42 @@
 import math
 import numpy as np
 from CAMELOptimizer import GradientDescentSolver
+from pytictoc import TicToc
 
+"""
+Difference btw/ existed MPC solver (analytic ver.) and this MPC solver (numerical ver.)
+
+1) I divided calculated gradient by dT^2 in existed MPC(because of the small gradient).
+ => So, I have to multiply dT^2 in forcePenalizeWeighting
+    Also, Step size should be divided by dT^2 
+
+"""
 class functionClass:
     def __init__(self, MPChorizon, initialPos, initialVel, desiredTrajectorySequence):
+        self.MPChorizon = MPChorizon
+        self.initialPos = initialPos
+        self.initialVel = initialVel
         self.trajectory = desiredTrajectorySequence
         self.dT = 0.005
         self.m = 5.0
         self.g = 9.81
         self.forceLimit = 200.0
-        self.initialPos = initialPos
-        self.initialVel = initialVel
-        self.weightingMat = np.array([[1.5, 0.0],[0.0, 0.001]])
-        self.forcePenalizeWeighting = 0.001
-        self.MPChorizon = MPChorizon
-        self.x = np.zeros((2,self.MPChorizon))
-        self.next_x = np.zeros((2,self.MPChorizon))
-        self.next_x_temp = np.zeros((2,self.MPChorizon))
-        self.x[0,0] = initialPos
-        self.x[1,0] = initialVel
-        self.force = np.ones(self.MPChorizon)*self.m * self.g
         
         self.A = np.array([[1.0, self.dT],[0, 1.0]])
         self.b = np.array([[0],[self.dT/self.m]])
         self.c = np.zeros((2,self.MPChorizon))
         for i in range(0,self.MPChorizon):
             self.c[1,i] = -self.dT/self.g
+
+        self.weightingMat = np.array([[1.5, 0.0],[0.0, 0.001]])
+        self.forcePenalizeWeighting = 1e-3 * self.dT * self.dT
+        self.next_x = np.zeros((2,self.MPChorizon))
+        self.next_x_temp = np.zeros((2,self.MPChorizon))
+        self.force = np.ones(self.MPChorizon)*self.m * self.g
         
-        self.stepSize = 0.08
+        self.stepSize = 0.08 / self.dT / self.dT
         self.maximumIteration = 200
-        self.terminateCondition = 1e-3
+        self.terminateCondition = 1e-6
         self.delta = 1e-3
         self.iteration = 0
         self.terminateFlag = False
@@ -49,6 +56,7 @@ class functionClass:
 
     def updateStateTemp(self, force):
         for i in range(0, self.MPChorizon):
+            temp = 0.0
             if(i==0):
                 self.next_x_temp[0,i] = self.initialPos + self.dT * self.initialVel
                 self.next_x_temp[1,i] = self.initialVel + self.dT * (force[i] / self.m - self.g)
@@ -105,24 +113,26 @@ class functionClass:
             self.terminateReason = "terminate conditon"
             self.terminateFlag = True
 
-    
-
-
 desiredTrajectory = np.zeros((2,1000))
-temp1 = np.arange(start=0,stop=2,step=0.002)
-temp2 = np.ones(np.size(temp1))*0.4
-desiredTrajectory[0,:] = temp1
-desiredTrajectory[1,:] = temp2
-
+positionTrajectory = np.arange(start=0,stop=2,step=0.002)
+velocityTrajectory = np.ones(np.size(positionTrajectory))*0.4
+desiredTrajectory[0,:] = positionTrajectory
+desiredTrajectory[1,:] = velocityTrajectory
+tictoc = TicToc()
 
 currentPos = 0.0
 currentVel = 0.0
 MPChorizon = 10
+
 for i in range(0, 900):
     desiredTrajectorySequence = desiredTrajectory[:,i+1:i+MPChorizon+1]
     MPCsolver = functionClass(MPChorizon, initialPos=currentPos, initialVel=currentVel, desiredTrajectorySequence=desiredTrajectorySequence)
+    tictoc.tic()
     MPCsolver.solve()
-    # print(MPCsolver.iteration)
+    tictoc.toc()
+    
+    print(MPCsolver.iteration)
+    print(MPCsolver.RMSgradient)
     print(MPCsolver.next_x)
     print(desiredTrajectorySequence)
     print(MPCsolver.force)
