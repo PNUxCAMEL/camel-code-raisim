@@ -13,8 +13,8 @@ Path of bin and license should be set by user.
 
 """
 
-binPath = 'C:/Users/AnJaeHoon/raisimLib-master/install/bin'
-licensePath = "C:/Users/AnJaeHoon/.raisim/raisim.activation"
+binPath = 'C:/Users/Jaehoon/raisimLib/install/bin'
+licensePath = "C:/Users/Jaehoon/.raisim/raisim.activation"
 sys.path.append(binPath)
 import raisimpy as raisim
 raisim.World.setLicenseFile(licensePath)
