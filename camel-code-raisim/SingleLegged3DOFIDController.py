@@ -14,7 +14,12 @@ import numpy as np
 Results
     : bad.. compared to full body dynamics equation (not modeled one.)
       I needed to adjust mass value(in Robot class) in order to make proper initial force
+
+TODO : In current system, ankle joint has an independent PD controller.
+       Because I think foot needs planar contact region with ground.
+       Ask S.S.Dr.Lee about control law of foot.
 """
+
 class SingleLegged3DOFIDController(InverseDynamicsController):
     def __init__(self, robot):
         super().__init__(robot)
@@ -47,6 +52,7 @@ class SingleLegged3DOFIDController(InverseDynamicsController):
             self.currentPosition = self.goalPosition
             self.goalPosition = (random.random()-0.5)*0.2 + 0.42426
             self.trajectoryGenerator.updateTrajectory(currentPosition=self.currentPosition, goalPosition=self.goalPosition, currentTime= self.robot.getTime(), timeDuration=2.0)
+    
     # override
     def setTrajectory(self, desiredPosition, desiredVelocity, desiredAcceleration):
         return super().setTrajectory(desiredPosition, desiredVelocity, desiredAcceleration)
