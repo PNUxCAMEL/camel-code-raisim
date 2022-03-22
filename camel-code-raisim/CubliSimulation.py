@@ -3,7 +3,7 @@ from CAMELRaisimLib import Simulation, CAMELThread
 from PySide6.QtWidgets import QApplication
 
 from CubliRobot import CubliRobot
-from CubliPDControll_noTrajactory import CubliPDController
+from CubliPDControll_UnitTrajactory import CubliPDController
 from CubliPlot import CubliPlot
 
 class CubliSimulation(Simulation):
@@ -20,7 +20,7 @@ class CubliSimulation(Simulation):
         
         # set controller 
         self.PDcontroller = CubliPDController(robot=self.robot)
-        self.PDcontroller .setPDGain(-20,-300)
+        self.PDcontroller .setPDGain(-5,-5)
 
         self.setController(self.PDcontroller)
         # set plot

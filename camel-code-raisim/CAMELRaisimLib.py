@@ -274,4 +274,4 @@ class UI(QMainWindow):
     #     pen1 = pg.mkPen(color=(0, 0, 255))
     #     self.graphWidget.plot([0 , 0], [0, 0], pen=pen1)        
     #     pen2 = pg.mkPen(color=(255, 0, 0))
-    #     self.graphWidget.plot([0, 0], [0, 0], pen=pen2)        
+    #     self.graphWidget.plot([0, 0], [0, 0], pen=pen2)      
