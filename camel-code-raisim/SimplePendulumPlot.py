@@ -13,8 +13,8 @@ class SimplePendulumPlot(Plot):
     # override
     def setData(self):
         self.t = np.append(self.t, [self.sim.getTime()])
-        self.data1 = np.append(self.data1, [self.controller.getDesiredPosition()])
-        self.data2 = np.append(self.data2, [self.controller.getPosition()])
+        # self.data1 = np.append(self.data1, [self.controller.getDesiredPosition()])
+        # self.data2 = np.append(self.data2, [self.controller.getPosition()])
 
-        # self.data1 = np.append(self.data1, [self.controller.getDesiredVelocity()])
-        # self.data2 = np.append(self.data2, [self.controller.getVelocity()])
+        self.data1 = np.append(self.data1, [self.controller.getDesiredVelocity()])
+        self.data2 = np.append(self.data2, [self.controller.getVelocity()])

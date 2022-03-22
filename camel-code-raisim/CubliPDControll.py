@@ -1,17 +1,22 @@
 from CAMELController import PDController
+from CAMELTrajectoryGenerator import ThirdOrderPolynomialTrajectory1D
 import numpy as np
 
-class SimplePendulumPDController(PDController):
+class CubliPDController(PDController):
 
     def __init__(self, robot):
         super().__init__(robot)
         self.setPDGain(PGain=100.0, DGain=10.0)
-        self.setTrajectory(desiredPosition=-1.57, desiredVelocity=0.0)
-        self.setTorqueLimit(20)
+        self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
+        self.updateState()
+        self.trajectoryGenerator.updateTrajectory(self.position, 0.0, self.robot.getTime(), 20.0)
+        self.setTorqueLimit(10.0)
 
     # override
     def doControl(self):
         self.updateState()
+        self.setTrajectory(desiredPosition=self.trajectoryGenerator.getPostionTrajectory(self.robot.getTime()), desiredVelocity=self.trajectoryGenerator.getVelocityTrajectory(self.robot.getTime()))
+        # print(self.velocity)
         self.computeControlInput()
         self.setControlInput()
 
@@ -29,15 +34,15 @@ class SimplePendulumPDController(PDController):
         self.positionError = self.desiredPosition - self.position
         self.differentialError = self.desiredVelocity - self.velocity
         self.torque = self.PGain * self.positionError + self.DGain * self.differentialError
-        
+        print(self.torque)
     # override
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
-            self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
+            self.robot.setGeneralizedForce(np.array([0, self.torqueLimit]))
         elif(-self.torqueLimit > self.torque):
-            self.robot.setGeneralizedForce(np.array([-self.torqueLimit]))
+            self.robot.setGeneralizedForce(np.array([0, -self.torqueLimit]))
         else:
-            self.robot.setGeneralizedForce(np.array([self.torque]))        
+            self.robot.setGeneralizedForce(np.array([0, self.torque]))        
 
     def setTorqueLimit(self, torqueLimit):
         self.torqueLimit = torqueLimit
@@ -53,3 +58,6 @@ class SimplePendulumPDController(PDController):
     
     def getDesiredVelocity(self):
         return self.desiredVelocity
+
+    def getInputTorque(self):
+        return self.torque
