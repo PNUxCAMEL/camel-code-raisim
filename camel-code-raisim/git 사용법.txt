@@ -5,3 +5,12 @@
 3. add : git add .
 4. commit : git commit -m "Verb(-ing) + Objective" Ex. initialize hwayoung branch
 5. push : git push -u origin hwayoung
+
+=======
+1. pull request시 cache파일 없앤다.
+2. repository를 받아온 후(git clone 후) 
+
+binPath = 'C:/Users/user/raisimLib/install/bin'
+licensePath = "C:/Users/user/.raisim/raisim.activation"
+
+를 CAMELRaisimLib.py에 15번째 줄에 추가
