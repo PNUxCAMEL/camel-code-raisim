@@ -33,3 +33,9 @@
     binPath = 'C:/Users/user/raisimLib/install/bin'
     licensePath = "C:/Users/user/.raisim/raisim.activation"
     추가하기
+
+[slack 연동 법]
+1. 연동하기
+    /github subscribe "organization"/"repository name" branches commits:* reviews comments
+2. 연동해제하기
+    /github unsubscribe PNUxCAMEL/camel-code-raisim
