@@ -10,10 +10,14 @@ import numpy as np
         First, find Force by inverse dynamics of model
         (force = mass*(desired_zdd +Kp*positionError + Kd*velocityError) - mass*gravity)
         Second, find torque by Jacobian * Force
+        (Jacobian is from kinematic constraints)
 
-Results
-    : bad.. compared to full body dynamics equation (not modeled one.)
+Problems(Solved!)
+    : compared to full body dynamics equation (not modeled one.)
       I needed to adjust mass value(in Robot class) in order to make proper initial force
+
+=> it is solved by get full Jacobian.
+
 
 TODO : In current system, ankle joint has an independent PD controller.
        Because I think foot needs planar contact region with ground.
@@ -32,7 +36,7 @@ class SingleLegged3DOFIDController(InverseDynamicsController):
         self.positionError = 0
         self.differentialError = 0
         self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
-        self.goalPosition = 0.50
+        self.goalPosition = 0.61
         self.trajectoryGenerator.updateTrajectory(currentPosition=self.robot.getHipPositionZ(), goalPosition= self.goalPosition, currentTime= self.robot.getTime(), timeDuration=2.0)
     
     def setPDGain(self, PGain, DGain):
@@ -63,6 +67,7 @@ class SingleLegged3DOFIDController(InverseDynamicsController):
         self.velocity = self.robot.getHipVelocityZ()
         self.theta1 = self.robot.getHipAngularPosition()
         self.theta2 = self.robot.getKneeAngularPosition()
+        self.theta3 = self.robot.getAnkleAngularPosition()
         self.updateMassMatrix()
         self.updateJacobian()
         self.updateGravityTerm()
@@ -75,18 +80,16 @@ class SingleLegged3DOFIDController(InverseDynamicsController):
         self.gravityTerm = self.robot.getMass() * self.gravity
 
     def updateJacobian(self):
-        self.dz_dth1 = -self.robot.getUpperLegLength()*math.sin(self.theta1)
-        self.dz_dth2 = -self.robot.getLowerLegLength()*math.sin(self.theta2)
+        self.dz_dth1 = -self.robot.getUpperLegLength()*math.sin(self.theta1) -self.robot.getLowerLegLength()*math.sin(self.theta1+self.theta2) -self.robot.getFootLength()*math.sin(self.theta1+self.theta2+self.theta3)
+        self.dz_dth2 = -self.robot.getLowerLegLength()*math.sin(self.theta1+self.theta2)-self.robot.getFootLength()*math.sin(self.theta1+self.theta2+self.theta3)
+        self.dz_dth3 = -self.robot.getFootLength()*math.sin(self.theta1+self.theta2+self.theta3)
+
 
     def computeForceToTorque(self):
         self.torque[0] = 0.0
         self.torque[1] = self.dz_dth1 * self.force
         self.torque[2] = self.dz_dth2 * self.force
-
-        tempAnklePosition = self.theta1 + self.theta2 + self.robot.getAnkleAngularPosition()
-        tempAnkleDesiredPosition = -math.pi * 0.5
-        tempAnkleVelocity = self.robot.getAnkleAngularVelocity()
-        self.torque[3] = 20.0 * (tempAnkleDesiredPosition - tempAnklePosition) + 2.0*(0.0 -  tempAnkleVelocity)   # should be modified later
+        self.torque[3] = self.dz_dth3 * self.force
 
     def computeControlInput(self):
         self.positionError = self.desiredPosition - self.position

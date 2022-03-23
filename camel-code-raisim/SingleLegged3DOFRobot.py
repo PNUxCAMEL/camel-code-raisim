@@ -19,9 +19,10 @@ class SingleLegged3DOFRobot(Robot):
         name = 'single_leg'
         super().__init__(sim, urdfPath, name)
         self.initialize()
-        self.mass = 2.3
+        self.mass = 5.0
         self.upperLegLength = 0.3
         self.lowerLegLength = 0.3
+        self.footLength = 0.1
 
     # override
     def initialize(self):
@@ -67,3 +68,6 @@ class SingleLegged3DOFRobot(Robot):
     
     def getLowerLegLength(self):
         return self.lowerLegLength
+
+    def getFootLength(self):
+        return self.footLength
