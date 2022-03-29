@@ -9,6 +9,7 @@
 [brach 관련]
 1. branch 확인 : git branch
 2. branch 이동 : git checkout 이동할branch
+3. branch 생성 : git branch 생성할branch 분기할branch
 
 [add commit push]
 1. add : git add .
