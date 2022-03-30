@@ -90,8 +90,6 @@ class InverseDynamicsController(Controller):
         return super().setControlInput()
     
     
-        
-
 class MPCController(Controller):
     def __init__(self, robot):
         super().__init__(robot)
@@ -116,3 +114,27 @@ class MPCController(Controller):
 
     def setSolver(self, solver):
         self.solver = solver
+
+
+class EnergyShapingController(Controller):
+    def __init__(self, robot):
+        super().__init__(robot)
+
+    def doControl(self):
+        return super().doControl()
+
+    def setPGain(self, PGain):
+        self.PGain = PGain
+
+    def setTrajectory(self, desiredEnergy):
+        self.desiredEnergy = desiredEnergy
+
+    def updateState(self):
+        return super().updateState()
+    
+    @abstractmethod
+    def updateEnergy(self):
+        pass
+
+    def computeControlInput(self):
+        return super().computeControlInput()

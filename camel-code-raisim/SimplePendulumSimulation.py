@@ -6,13 +6,14 @@ from SimplePendulumRobot import SimplePendulumRobot
 from SimplePendulumPDController import SimplePendulumPDController
 from SimplePendulumPIDController import SimplePendulumPIDController
 from SimplePendulumIDController import SimplePendulumIDController
+from SimplePendulumESController import SimplePendulumESController
 from SimplePendulumPlot import SimplePendulumPlot
 
 class SimplePendulumSimulation(Simulation):
     def __init__(self):
         super().__init__()
         self.setDT(0.005)
-        self.setSimulationDuration(duration = 1.0)
+        self.setSimulationDuration(duration = 6.0)
         self.setFastSimulation(False)
         self.setDataPlot(True)
         self.initializeServer()
@@ -26,8 +27,9 @@ class SimplePendulumSimulation(Simulation):
         self.PIDcontroller = SimplePendulumPIDController(self.robot)
         self.PIDcontroller.setPIDGain(200,1,20)
         self.IDcontroller = SimplePendulumIDController(self.robot)
+        self.EScontroller = SimplePendulumESController(self.robot)
 
-        self.setController(self.IDcontroller)
+        self.setController(self.EScontroller)
         
         # set plot
         self.plot = SimplePendulumPlot(self)
