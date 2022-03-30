@@ -169,11 +169,17 @@ class Robot:
     def getBodyNames(self):
         return self.robot.getBodyNames()
 
+    def getBodyIdx(self, bodyName):
+        return self.robot.getBodyIdx(bodyName)
+        
     def getFrames(self):
         return self.robot.getFrames()
 
     def setGeneralizedForce(self, force):
         return self.robot.setGeneralizedForce(force)
+
+    def setExternalForce(self, localIndex, position, force):
+        return self.robot.setExternalForce(localIndex, position, force)
 
     def getTime(self):
         return self.sim.getTime()
