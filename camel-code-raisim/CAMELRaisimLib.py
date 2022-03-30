@@ -13,8 +13,8 @@ Path of bin and license should be set by user.
 
 """
 
-binPath = 'C:/Users/Jaehoon/raisimLib/install/bin'
-licensePath = "C:/Users/Jaehoon/.raisim/raisim.activation"
+binPath = 'C:/Users/yonghun/raisimLib-master/install/bin'
+licensePath = "C:/Users/yonghun/.raisim/raisim.activation"
 sys.path.append(binPath)
 import raisimpy as raisim
 raisim.World.setLicenseFile(licensePath)
@@ -42,8 +42,8 @@ class CAMELThread (threading.Thread):
                   self.sim.getPlot().setData()
                
             else:
-               if(self.sim.isDataPlot):
-                  self.ui.plot(self.sim.getPlot().t,self.sim.getPlot().data1,self.sim.getPlot().t,self.sim.getPlot().data2)
+            #    if(self.sim.isDataPlot):
+                #   self.ui.plot(self.sim.getPlot().t,self.sim.getPlot().data1,self.sim.getPlot().t,self.sim.getPlot().data2)
                   
                
                print("simulation time : ", self.sim.getTime())
@@ -66,7 +66,7 @@ class CAMELThread (threading.Thread):
    def realTimeSimulation(self):
       self.delay(self.sim.getDT() / 2)
       # print("current time :", self.sim.getTime())
-      self.sim.controller.doControl()
+    #   self.sim.controller.doControl()
       self.sim.integrate()
 
 

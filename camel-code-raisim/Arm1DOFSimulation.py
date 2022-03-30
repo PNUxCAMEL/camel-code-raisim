@@ -21,17 +21,17 @@ class SimplePendulumSimulation(Simulation):
         self.robot = SimplePendulumRobot(self)
         
         # set controller 
-        self.PDcontroller = SimplePendulumPDController(self.robot)
-        self.PDcontroller.setPDGain(400,30)
-        self.PIDcontroller = SimplePendulumPIDController(self.robot)
-        self.PIDcontroller.setPIDGain(200,1,20)
-        self.IDcontroller = SimplePendulumIDController(self.robot)
+        # self.PDcontroller = SimplePendulumPDController(self.robot)
+        # self.PDcontroller.setPDGain(400,30)
+        # self.PIDcontroller = SimplePendulumPIDController(self.robot)
+        # self.PIDcontroller.setPIDGain(200,1,20)
+        # self.IDcontroller = SimplePendulumIDController(self.robot)
 
-        self.setController(self.PDcontroller)
+        # self.setController(self.PDcontroller)
         
         # set plot
-        self.plot = SimplePendulumPlot(self)
-        self.setPlot(self.plot)
+        # self.plot = SimplePendulumPlot(self)
+        # self.setPlot(self.plot)
 
         # set thread
         self.thread = CAMELThread(self)
