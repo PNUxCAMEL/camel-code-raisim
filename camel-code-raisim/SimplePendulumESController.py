@@ -46,7 +46,7 @@ class SimplePendulumESController(EnergyShapingController):
     # override
     def computeControlInput(self):
         self.energyError = self.energy - self.desiredEnergy
-        self.torque = -1 * self.PGain * self.velocity * self.energyError
+        self.torque = -1 * self.PGain * self.velocity * self.energyError + 3.0 * self.velocity
         print("torque : ", self.torque)
         
 
