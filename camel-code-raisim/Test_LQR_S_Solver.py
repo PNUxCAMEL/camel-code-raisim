@@ -32,7 +32,7 @@ def costFunction(x):
     #             (- B[1,0]**2*S[1,1]**2 - 2*B[1,0]*B[2,0]*S[1,1]*S[1,2] - B[2,0]**2*S[1,2]**2 + 2*A[1,1]*R*S[1,1] + 2*A[2,1]*R*S[1,2] + Q[1,1]*R + 2*R*S[0,1])**2/R**2 + \
     #                 (2*(R*S[0,2] - B[1,0]**2*S[1,1]*S[1,2] - B[2,0]**2*S[1,2]*S[2,2] + A[1,1]*R*S[1,2] + A[1,2]*R*S[1,1] + A[2,2]*R*S[1,2] + A[2,1]*R*S[2,2] - B[1,0]*B[2,0]*S[1,2]**2 - B[1,0]*B[2,0]*S[1,1]*S[2,2])**2)/R**2 + \
     #                     (2*(R*S[0,0] - B[1,0]**2*S[0,1]*S[1,1] - B[2,0]**2*S[0,2]*S[1,2] + A[1,1]*R*S[0,1] + A[1,0]*R*S[1,1] + A[2,1]*R*S[0,2] + A[2,1]*R*S[1,2] - B[1,0]*B[2,0]*S[0,1]*S[1,2] - B[1,0]*B[2,0]*S[0,2]*S[1,1])**2)/R**2
-    print(cost)
+    # print(cost)
     return cost
 
 
@@ -41,5 +41,6 @@ GDSolver = GradientDescentSolver()
 GDSolver.setObjectiveFunction(costFunction)
 GDSolver.setInitialPoint(initialPoint)
 GDSolver.solve()
+
 
 print(GDSolver.x)
