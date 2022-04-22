@@ -13,8 +13,16 @@ class SimplePendulumPlot(Plot):
     # override
     def setData(self):
         self.t = np.append(self.t, [self.sim.getTime()])
-        # self.data1 = np.append(self.data1, [self.controller.getDesiredPosition()])
-        # self.data2 = np.append(self.data2, [self.controller.getPosition()])
 
-        self.data1 = np.append(self.data1, [self.controller.getDesiredVelocity()])
-        self.data2 = np.append(self.data2, [self.controller.getVelocity()])
+        #plot energy error for energy shaping controller
+        # self.t = np.append(self.t, [self.controller.getEnergyError()])
+
+        self.data1 = np.append(self.data1, [self.controller.getPosition()])
+        self.data2 = np.append(self.data2, [self.controller.getDesiredPosition()])
+
+        # self.data1 = np.append(self.data1, [self.controller.getDesiredVelocity()])
+        # self.data2 = np.append(self.data2, [self.controller.getVelocity()])
+
+        #plot data for energy shaping controller
+        # self.data1 = np.append(self.data1, [self.controller.getDEnergyError()])
+        # self.data2 = np.append(self.data2, [self.controller.getDEnergyError()])

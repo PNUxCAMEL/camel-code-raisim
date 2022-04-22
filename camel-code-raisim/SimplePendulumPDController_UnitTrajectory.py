@@ -1,31 +1,24 @@
 from CAMELController import PDController
-from CAMELTrajectoryGenerator import ThirdOrderPolynomialTrajectory1D
 import numpy as np
 import math
 
-class SimplePendulumPDController(PDController):
+class SimplePendulumPDController_UnitTrajectory(PDController):
 
     def __init__(self, robot):
         super().__init__(robot)
-        self.trajectoryDuration = 6.0
         self.setPDGain(PGain=100.0, DGain=10.0)
         self.updateState()
-        self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
-        self.trajectoryGenerator.updateTrajectory(self.position, math.pi * 0.25, self.robot.getTime(), self.trajectoryDuration)
-        self.setTorqueLimit(20000)
+        self.setTorqueLimit(20)
 
     # override
     def doControl(self):
         self.updateState()
-        self.setTrajectory(desiredPosition=self.trajectoryGenerator.getPostionTrajectory(self.robot.getTime()), desiredVelocity=self.trajectoryGenerator.getVelocityTrajectory(self.robot.getTime()))
+        self.setTrajectory(desiredPosition=math.pi * 0.25, desiredVelocity=0.0)
         self.computeControlInput()
         self.setControlInput()
 
     # override
     def setTrajectory(self, desiredPosition, desiredVelocity):
-        if self.robot.getTime() > self.trajectoryDuration :
-            desiredPosition = math.pi * 0.25
-            desiredVelocity = 0.0
         return super().setTrajectory(desiredPosition, desiredVelocity)
 
     # override
