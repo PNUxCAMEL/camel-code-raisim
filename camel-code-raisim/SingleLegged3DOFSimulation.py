@@ -14,7 +14,7 @@ class SingleLegged3DOFSimulation(Simulation):
         self.setFastSimulation(True)
         self.setDataPlot(True)
         self.initializeServer()
-
+        
         # set robot class
         self.robot = SingleLegged3DOFRobot(self)
         

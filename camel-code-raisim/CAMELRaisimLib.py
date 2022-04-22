@@ -12,8 +12,7 @@ import pyqtgraph as pg
 Path of bin and license should be set by user. 
 
 """
-binPath = 'C:/Users/user/raisimLib/install/bin'
-licensePath = "C:/Users/user/.raisim/raisim.activation"
+
 sys.path.append(binPath)
 import raisimpy as raisim
 raisim.World.setLicenseFile(licensePath)
