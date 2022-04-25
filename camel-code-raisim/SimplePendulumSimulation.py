@@ -1,6 +1,7 @@
 import sys
 from CAMELRaisimLib import Simulation, CAMELThread
 from PySide6.QtWidgets import QApplication
+import math
 
 from SimplePendulumRobot import SimplePendulumRobot
 from SimplePendulumPDController_UnitTrajectory import SimplePendulumPDController_UnitTrajectory
@@ -8,13 +9,14 @@ from SimplePendulumPDController import SimplePendulumPDController
 from SimplePendulumPIDController import SimplePendulumPIDController
 from SimplePendulumIDController import SimplePendulumIDController
 from SimplePendulumESController import SimplePendulumESController
+from SimplePendulumSW import SimplePendulumSW
 from SimplePendulumPlot import SimplePendulumPlot
 
 class SimplePendulumSimulation(Simulation):
     def __init__(self):
         super().__init__()
         self.setDT(0.005)
-        self.setSimulationDuration(duration = 10.0)
+        self.setSimulationDuration(duration = 6.0)
         self.setFastSimulation(False)
         self.setDataPlot(True)
         self.initializeServer()
@@ -31,8 +33,9 @@ class SimplePendulumSimulation(Simulation):
         self.PIDcontroller.setPIDGain(200,1,20)
         self.IDcontroller = SimplePendulumIDController(self.robot)
         self.EScontroller = SimplePendulumESController(self.robot)
+        self.SWcontroller = SimplePendulumSW(self.robot)
 
-        self.setController(self.PDcontroller)
+        self.setController(self.SWcontroller)
         
         # set plot
         self.plot = SimplePendulumPlot(self)

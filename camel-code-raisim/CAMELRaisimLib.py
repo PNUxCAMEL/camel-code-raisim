@@ -13,6 +13,9 @@ Path of bin and license should be set by user.
 
 """
 
+binPath = 'C:/Users/User/raisimLib/install/bin'
+licensePath = 'C:/Users/User/.raisim/raisim.activation'
+
 sys.path.append(binPath)
 import raisimpy as raisim
 raisim.World.setLicenseFile(licensePath)

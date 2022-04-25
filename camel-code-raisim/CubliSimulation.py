@@ -3,7 +3,7 @@ from CAMELRaisimLib import Simulation, CAMELThread
 from PySide6.QtWidgets import QApplication
 
 from CubliRobot import CubliRobot
-from CubliPDControll_UnitTrajactory import CubliPDController
+from CubliPDController_UnitTrajactory import CubliPDController
 from CubliPlot import CubliPlot
 
 class CubliSimulation(Simulation):

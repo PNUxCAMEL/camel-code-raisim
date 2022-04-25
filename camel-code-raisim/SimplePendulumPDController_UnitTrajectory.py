@@ -8,12 +8,12 @@ class SimplePendulumPDController_UnitTrajectory(PDController):
         super().__init__(robot)
         self.setPDGain(PGain=100.0, DGain=10.0)
         self.updateState()
-        self.setTorqueLimit(20)
+        self.setTorqueLimit(50)
 
     # override
     def doControl(self):
         self.updateState()
-        self.setTrajectory(desiredPosition=math.pi * 0.25, desiredVelocity=0.0)
+        self.setTrajectory(desiredPosition=math.pi * 1.0, desiredVelocity=0.0)
         self.computeControlInput()
         self.setControlInput()
 
