@@ -8,6 +8,14 @@ class GradientDescentSolver:
         self.delta = 1e-6 
         self.iteration = 0
         self.terminateFlag = False
+    
+    def reset(self):
+        self.iteration = 0
+        self.gradient = np.zeros(self.dim)
+        self.terminateFlag = False
+
+    def setDelta(self, delta):
+        self.delta = delta
 
     def setStepSize(self, stepSize):
         self.stepSize = stepSize
@@ -28,12 +36,12 @@ class GradientDescentSolver:
     
     def computeGradient(self):
         functionValue = self.objectiveFunction(self.x)
-        print(functionValue)
+        #print(functionValue)
         for i in range(self.dim):
             temp_x = self.x.copy()
             temp_x[i] += self.delta 
             self.gradient[i] = (self.objectiveFunction(temp_x) - functionValue) / self.delta
-        print(self.gradient)
+       # print("gradient : ",self.gradient)
         self.RMSgradient = (self.gradient.dot(self.gradient) / self.dim) ** (1/2)
 
     def updateVariables(self):
@@ -50,6 +58,7 @@ class GradientDescentSolver:
     def solve(self):
         for i in range(self.maximumIteration):
             self.iteration += 1
+           # print("iteration", self.iteration)
             self.computeGradient()
             self.updateVariables()
             self.checkTerminateCondition()

@@ -248,9 +248,9 @@ class UI(QMainWindow):
     def initializeWindow(self):
         self.setMinimumHeight(300)
         self.setMinimumWidth(500)
-        styles = {'color':'b', 'font-size':'10px'}
-        self.graphWidget.setLabel('left', 'rad', **styles)
-        self.graphWidget.setLabel('bottom', 'time [s]', **styles)
+        styles = {'color':'b', 'font-size':'20px'}
+        self.graphWidget.setLabel('left', ' ', **styles)
+        self.graphWidget.setLabel('bottom', ' ', **styles)
 
     @Slot()
     def buttonPressPlay(self):

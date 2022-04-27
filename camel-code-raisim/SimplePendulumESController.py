@@ -7,7 +7,10 @@ class SimplePendulumESController(EnergyShapingController):
     def __init__(self, robot):
         super().__init__(robot)
         self.setPGain(PGain = 2.0)
+        self.Kp = 200
+        self.Kd = 50
         self.desiredPosition = 1.0 * math.pi
+        self.desiredVelocity = 0.0
         self.setTorqueLimit(5)
         print(self.robot.getBodyIdx("wire"))
 
@@ -46,18 +49,23 @@ class SimplePendulumESController(EnergyShapingController):
     # override
     def computeControlInput(self):
         self.energyError = self.energy - self.desiredEnergy
-        self.torque = -1 * self.PGain * self.velocity * self.energyError + 3.0 * self.velocity
-        print("torque : ", self.torque)
+        self.torque = -1 * self.PGain * self.velocity * self.energyError
+        self.feedback = self.Kp * (self.desiredPosition - np.abs(self.position)) + self.Kd * (self.desiredVelocity - self.velocity)
+        self.torque = (1 - np.abs(self.position)/math.pi) * self.torque + np.abs(self.position)/math.pi * self.feedback
+        # print("torque : ", self.torque)
         
 
     # override
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
             self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
+            self.inputTorque = self.torqueLimit
         elif(-self.torqueLimit > self.torque):
             self.robot.setGeneralizedForce(np.array([-self.torqueLimit]))
+            self.inputTorque = -self.torqueLimit
         else:
-            self.robot.setGeneralizedForce(np.array([self.torque]))        
+            self.robot.setGeneralizedForce(np.array([self.torque]))
+            self.inputTorque = self.torque        
 
     def setTorqueLimit(self, torqueLimit):
         self.torqueLimit = torqueLimit
@@ -70,8 +78,10 @@ class SimplePendulumESController(EnergyShapingController):
 
     def getDesiredPosition(self):
         return self.desiredPosition
-    
-    # #for plot
+
+    def getInputTorque(self):
+        return self.inputTorque
+
     def getEnergyError(self):
         return self.energyError
 

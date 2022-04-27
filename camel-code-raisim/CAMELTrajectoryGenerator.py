@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 class ThirdOrderPolynomialTrajectory1D:
     """
@@ -90,3 +91,11 @@ class ThirdOrderPolynomialTrajectoryNDim:
         normalizedTime = (currentTime - self.referenceTime) / self.timeDuration
         timeForAccelerationMatrix = np.array([6*normalizedTime, 2, 0, 0])
         return timeForAccelerationMatrix.dot(self.coefficientMatrix) / (self.timeDuration**2)
+
+class ThirdOrderPolynomialTrajectory1D_NonStop(ThirdOrderPolynomialTrajectory1D):
+    def updateTrajectory(self, currentPosition, goalPosition,currentVelocity, goalVelocity, currentTime, timeDuration):
+        self.functionValue = np.array([currentPosition, goalPosition, currentVelocity, goalVelocity])
+        self.referenceTime = currentTime
+        self.timeDuration = timeDuration
+        self.calculateCoefficient()
+      

@@ -6,9 +6,10 @@ from CAMELTrajectoryGenerator import ThirdOrderPolynomialTrajectory1D
 class SimplePendulumIDController(InverseDynamicsController):
     def __init__(self, robot):
         super().__init__(robot)
+        self.trajectoryDuration = 5.0
         self.setPDGain(PGain = 200.0, DGain= 20.0)
         self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
-        self.trajectoryGenerator.updateTrajectory(currentPosition=self.robot.getQ(), goalPosition= 2.57, currentTime= self.robot.getTime(), timeDuration=1.0)
+        self.trajectoryGenerator.updateTrajectory(currentPosition=self.robot.getQ(), goalPosition= math.pi * 1.0, currentTime= self.robot.getTime(), timeDuration=self.trajectoryDuration)
         self.setTorqueLimit(50)
 
     def setPDGain(self, PGain, DGain):
@@ -22,6 +23,10 @@ class SimplePendulumIDController(InverseDynamicsController):
         self.setControlInput()
     
     def setTrajectory(self, desiredPosition, desiredVelocity, desiredAcceleration):
+        if self.robot.getTime() > self.trajectoryDuration :
+            desiredPosition = math.pi * 1.0
+            desiredVelocity = 0.0
+            desiredAcceleration = 0.0
         return super().setTrajectory(desiredPosition, desiredVelocity, desiredAcceleration)
 
     # override
@@ -42,18 +47,23 @@ class SimplePendulumIDController(InverseDynamicsController):
     def computeControlInput(self):
         self.positionError = self.desiredPosition - self.position
         self.velocityError = self.desiredVelocity - self.velocity
-        self.torque = self.massMatrix * (self.desiredAcceleration + self.PGain * self.positionError + self.DGain * self.velocityError) - self.gravityTerm
-        print("torque : ", self.torque)
+
+        # self.torque = self.massMatrix * (self.desiredAcceleration + self.PGain * self.positionError + self.DGain * self.velocityError) - self.gravityTerm
+        self.torque = self.massMatrix * self.desiredAcceleration - self.gravityTerm
+        # print("torque : ", self.torque)
         
 
     # override
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
             self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
+            self.inputTorque = self.torqueLimit
         elif(-self.torqueLimit > self.torque):
             self.robot.setGeneralizedForce(np.array([-self.torqueLimit]))
+            self.inputTorque = -self.torqueLimit
         else:
             self.robot.setGeneralizedForce(np.array([self.torque]))        
+            self.inputTorque = self.torque      
 
     def setTorqueLimit(self, torqueLimit):
         self.torqueLimit = torqueLimit
@@ -69,4 +79,6 @@ class SimplePendulumIDController(InverseDynamicsController):
     
     def getDesiredVelocity(self):
         return self.desiredVelocity
-    
+
+    def getInputTorque(self):
+        return self.inputTorque
