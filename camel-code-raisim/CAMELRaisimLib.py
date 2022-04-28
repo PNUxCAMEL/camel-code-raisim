@@ -13,6 +13,9 @@ Path of bin and license should be set by user.
 
 """
 
+binPath = 'C:/Users/User/raisimLib/install/bin'
+licensePath = 'C:/Users/User/.raisim/raisim.activation'
+
 sys.path.append(binPath)
 import raisimpy as raisim
 raisim.World.setLicenseFile(licensePath)
@@ -245,8 +248,8 @@ class UI(QMainWindow):
     def initializeWindow(self):
         self.setMinimumHeight(300)
         self.setMinimumWidth(500)
-        styles = {'color':'b', 'font-size':'10px'}
-        self.graphWidget.setLabel('left', 'rad', **styles)
+        styles = {'color':'b', 'font-size':'20px'}
+        self.graphWidget.setLabel('left', 'angle [rad]', **styles)
         self.graphWidget.setLabel('bottom', 'time [s]', **styles)
 
     @Slot()

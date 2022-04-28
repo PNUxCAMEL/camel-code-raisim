@@ -138,3 +138,27 @@ class EnergyShapingController(Controller):
 
     def computeControlInput(self):
         return super().computeControlInput()
+
+class OptimalController(Controller):
+    def __init__(self, robot):
+        super().__init__(robot)
+
+    def doControl(self):
+        return super().doControl()
+
+    def updateState(self):
+        return super().updateState()
+
+    def computeControlInput(self):
+        return super().computeControlInput()
+    
+    def setControlInput(self):
+        return super().setControlInput()
+
+    @abstractmethod
+    def objectiveFunction(self, u):
+        pass
+
+    @abstractmethod
+    def calNextState(self):
+        pass
