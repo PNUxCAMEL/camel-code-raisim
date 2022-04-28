@@ -68,10 +68,3 @@ class SimplePendulumPDController(PDController):
 
     def getInputTorque(self):
         return self.inputTorque
-
-class SimplePendulumPDControllerForFSM(SimplePendulumPDController):
-    def doControl(self):
-        self.updateState()
-        self.setTrajectory(desiredPosition=self.trajectoryGenerator.getPostionTrajectory(self.robot.getTime()), desiredVelocity=self.trajectoryGenerator.getVelocityTrajectory(self.robot.getTime()))
-        self.computeControlInput()
-        self.setControlInput()

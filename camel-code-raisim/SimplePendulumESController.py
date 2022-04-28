@@ -12,7 +12,6 @@ class SimplePendulumESController(EnergyShapingController):
         self.desiredPosition = 1.0 * math.pi
         self.desiredVelocity = 0.0
         self.setTorqueLimit(5)
-        print(self.robot.getBodyIdx("wire"))
 
         self.iteration = 0
 
@@ -27,6 +26,7 @@ class SimplePendulumESController(EnergyShapingController):
         self.setControlInput()
         if(self.iteration == 10):
             self.robot.setExternalForce(1,np.array([0.0, 0.0, -0.575]),np.array([10.0, 10.0, 10.0]))
+            # self.robot.setExternalForce(1,np.array([0.0, 0.0, -0.575]),np.array([0.1, 0.1, 0.1]))
         else:
             self.robot.setExternalForce(1,np.array([0.0, 0.0, -0.575]),np.array([0.0, 0.0, 0.0]))
         
@@ -52,7 +52,6 @@ class SimplePendulumESController(EnergyShapingController):
         self.torque = -1 * self.PGain * self.velocity * self.energyError
         self.feedback = self.Kp * (self.desiredPosition - np.abs(self.position)) + self.Kd * (self.desiredVelocity - self.velocity)
         self.torque = (1 - np.abs(self.position)/math.pi) * self.torque + np.abs(self.position)/math.pi * self.feedback
-        # print("torque : ", self.torque)
         
 
     # override

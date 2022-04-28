@@ -93,6 +93,16 @@ class ThirdOrderPolynomialTrajectoryNDim:
         return timeForAccelerationMatrix.dot(self.coefficientMatrix) / (self.timeDuration**2)
 
 class ThirdOrderPolynomialTrajectory1D_NonStop(ThirdOrderPolynomialTrajectory1D):
+    """
+    @author : Hwa-young Song
+
+    f(1) = goal_position
+    f(0) = current_position
+    f'(1) = goal_velocity
+    f'(0) = current_velocity
+
+    function value = [currentPosition, goalPosition, currenVelocity, goalVelocity].T
+    """
     def updateTrajectory(self, currentPosition, goalPosition,currentVelocity, goalVelocity, currentTime, timeDuration):
         self.functionValue = np.array([currentPosition, goalPosition, currentVelocity, goalVelocity])
         self.referenceTime = currentTime
