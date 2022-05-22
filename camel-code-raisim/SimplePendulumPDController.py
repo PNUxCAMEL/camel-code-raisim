@@ -7,12 +7,12 @@ class SimplePendulumPDController(PDController):
 
     def __init__(self, robot):
         super().__init__(robot)
-        self.trajectoryDuration = 6.0
+        self.trajectoryDuration = 0.3
         self.setPDGain(PGain=100.0, DGain=10.0)
         self.updateState()
         self.trajectoryGenerator = ThirdOrderPolynomialTrajectory1D()
-        self.trajectoryGenerator.updateTrajectory(self.position, math.pi * 0.25, self.robot.getTime(), self.trajectoryDuration)
-        self.setTorqueLimit(20000)
+        self.trajectoryGenerator.updateTrajectory(self.position, math.pi * 1.0, self.robot.getTime(), self.trajectoryDuration)
+        self.setTorqueLimit(5)
 
     # override
     def doControl(self):
@@ -24,7 +24,7 @@ class SimplePendulumPDController(PDController):
     # override
     def setTrajectory(self, desiredPosition, desiredVelocity):
         if self.robot.getTime() > self.trajectoryDuration :
-            desiredPosition = math.pi * 0.25
+            desiredPosition = math.pi * 1.0
             desiredVelocity = 0.0
         return super().setTrajectory(desiredPosition, desiredVelocity)
 
@@ -43,10 +43,13 @@ class SimplePendulumPDController(PDController):
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
             self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
+            self.inputTorque = self.torqueLimit
         elif(-self.torqueLimit > self.torque):
             self.robot.setGeneralizedForce(np.array([-self.torqueLimit]))
+            self.inputTorque = -self.torqueLimit
         else:
-            self.robot.setGeneralizedForce(np.array([self.torque]))        
+            self.robot.setGeneralizedForce(np.array([self.torque])) 
+            self.inputTorque = self.torque      
 
     def setTorqueLimit(self, torqueLimit):
         self.torqueLimit = torqueLimit
@@ -62,3 +65,6 @@ class SimplePendulumPDController(PDController):
     
     def getDesiredVelocity(self):
         return self.desiredVelocity
+
+    def getInputTorque(self):
+        return self.inputTorque

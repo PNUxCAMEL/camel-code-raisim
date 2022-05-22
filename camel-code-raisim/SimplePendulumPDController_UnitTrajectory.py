@@ -8,12 +8,12 @@ class SimplePendulumPDController_UnitTrajectory(PDController):
         super().__init__(robot)
         self.setPDGain(PGain=100.0, DGain=10.0)
         self.updateState()
-        self.setTorqueLimit(20)
+        self.setTorqueLimit(5)
 
     # override
     def doControl(self):
         self.updateState()
-        self.setTrajectory(desiredPosition=math.pi * 0.25, desiredVelocity=0.0)
+        self.setTrajectory(desiredPosition=math.pi * 1.0, desiredVelocity=0.0)
         self.computeControlInput()
         self.setControlInput()
 
@@ -36,10 +36,13 @@ class SimplePendulumPDController_UnitTrajectory(PDController):
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
             self.robot.setGeneralizedForce(np.array([self.torqueLimit]))
+            self.inputTorque = self.torqueLimit
         elif(-self.torqueLimit > self.torque):
             self.robot.setGeneralizedForce(np.array([-self.torqueLimit]))
+            self.inputTorque = -self.torqueLimit
         else:
-            self.robot.setGeneralizedForce(np.array([self.torque]))        
+            self.robot.setGeneralizedForce(np.array([self.torque]))  
+            self.inputTorque = self.torque      
 
     def setTorqueLimit(self, torqueLimit):
         self.torqueLimit = torqueLimit
@@ -55,3 +58,6 @@ class SimplePendulumPDController_UnitTrajectory(PDController):
     
     def getDesiredVelocity(self):
         return self.desiredVelocity
+
+    def getInputTorque(self):
+        return self.inputTorque

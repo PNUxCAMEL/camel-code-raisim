@@ -8,6 +8,14 @@ class GradientDescentSolver:
         self.delta = 1e-6 
         self.iteration = 0
         self.terminateFlag = False
+    
+    def reset(self):
+        self.iteration = 0
+        self.gradient = np.zeros(self.dim)
+        self.terminateFlag = False
+
+    def setDelta(self, delta):
+        self.delta = delta
 
     def setStepSize(self, stepSize):
         self.stepSize = stepSize

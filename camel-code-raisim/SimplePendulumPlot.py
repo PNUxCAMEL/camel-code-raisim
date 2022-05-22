@@ -15,14 +15,24 @@ class SimplePendulumPlot(Plot):
         self.t = np.append(self.t, [self.sim.getTime()])
 
         #plot energy error for energy shaping controller
-        # self.t = np.append(self.t, [self.controller.getEnergyError()])
+        #self.t = np.append(self.t, [self.controller.getEnergyError()])
 
-        self.data1 = np.append(self.data1, [self.controller.getPosition()])
-        self.data2 = np.append(self.data2, [self.controller.getDesiredPosition()])
+        #plot for phase diagram
+        #self.t = np.append(self.t, [self.controller.getPosition()])
+
+        # self.data1 = np.append(self.data1, [self.controller.getPosition()])
+        # self.data2 = np.append(self.data2, [self.controller.getDesiredPosition()])
 
         # self.data1 = np.append(self.data1, [self.controller.getDesiredVelocity()])
         # self.data2 = np.append(self.data2, [self.controller.getVelocity()])
 
+        self.data1 = np.append(self.data1, [self.controller.getInputTorque()])
+        self.data2 = np.append(self.data2, [self.controller.getInputTorque()])
+
         #plot data for energy shaping controller
-        # self.data1 = np.append(self.data1, [self.controller.getDEnergyError()])
-        # self.data2 = np.append(self.data2, [self.controller.getDEnergyError()])
+        #self.data1 = np.append(self.data1, [self.controller.getDEnergyError()])
+        #self.data2 = np.append(self.data2, [self.controller.getDEnergyError()])
+
+        #plot for phase diagram
+        #self.data1 = np.append(self.data1, [self.controller.getVelocity()])
+        #self.data2 = np.append(self.data2, [self.controller.getVelocity()])
