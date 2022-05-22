@@ -34,8 +34,12 @@ class CubliRobot(Robot):
     def getQD(self):
         return self.getGeneralizedVelocity()[0]
 
+
     def getMass(self):
         return self.mass
 
     def getWireLength(self):
         return self.wireLength
+
+    def getMotorVelocity(self):
+        return self.getGeneralizedVelocity()[1]

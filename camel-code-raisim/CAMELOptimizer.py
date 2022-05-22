@@ -28,12 +28,10 @@ class GradientDescentSolver:
     
     def computeGradient(self):
         functionValue = self.objectiveFunction(self.x)
-        print(functionValue)
         for i in range(self.dim):
             temp_x = self.x.copy()
             temp_x[i] += self.delta 
             self.gradient[i] = (self.objectiveFunction(temp_x) - functionValue) / self.delta
-        print(self.gradient)
         self.RMSgradient = (self.gradient.dot(self.gradient) / self.dim) ** (1/2)
 
     def updateVariables(self):

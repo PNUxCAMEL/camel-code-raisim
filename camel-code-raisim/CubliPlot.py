@@ -13,8 +13,11 @@ class CubliPlot(Plot):
     # override
     def setData(self):
         self.t = np.append(self.t, [self.sim.getTime()])
-        self.data1 = np.append(self.data1, [self.controller.getDesiredPosition()])
-        self.data2 = np.append(self.data2, [self.controller.getPosition()])
+        # self.data1 = np.append(self.data1, [self.controller.getDesiredPosition()])
+        # self.data2 = np.append(self.data2, [self.controller.getPosition()])
+
+        self.data1 = np.append(self.data1, [self.controller.getMotorVelocity()])
+        self.data2 = np.append(self.data2, [self.controller.getMotorVelocity()])
 
         # self.data2 = np.append(self.data2, [self.controller.getInputTorque()])
 

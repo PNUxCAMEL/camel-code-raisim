@@ -5,10 +5,10 @@ class CubliPDController(PDController):
 
     def __init__(self, robot):
         super().__init__(robot)
-        self.setPDGain(PGain=100.0, DGain=10.0)
+        self.setPDGain(PGain=200.0, DGain=10.0)
         self.updateState()
         self.setTrajectory(0.0, 0.0)
-        self.setTorqueLimit(10.0)
+        self.setTorqueLimit(3.0)
 
     # override
     def doControl(self):
@@ -23,14 +23,20 @@ class CubliPDController(PDController):
     # override
     def updateState(self):
         self.position = self.robot.getQ()
-        self.velocity = self.robot.getQD()           
+        self.velocity = self.robot.getQD()
+        self.motorV = self.robot.getMotorVelocity()          
 
     # override
     def computeControlInput(self):
         self.positionError = self.desiredPosition - self.position
         self.differentialError = self.desiredVelocity - self.velocity
-        self.torque = self.PGain * self.positionError + self.DGain * self.differentialError
+        self.torque = -self.PGain * self.positionError - self.DGain * self.differentialError
+        # if(self.robot.getTime() > 5.0):
+        #     ## LQR method should be implemented.
+            
+        
         print(self.torque)
+
     # override
     def setControlInput(self):
         if (self.torqueLimit < self.torque):
@@ -57,3 +63,6 @@ class CubliPDController(PDController):
 
     def getInputTorque(self):
         return self.torque
+
+    def getMotorVelocity(self):
+        return self.motorV

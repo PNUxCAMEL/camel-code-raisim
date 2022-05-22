@@ -25,30 +25,16 @@
 
   <link name="base">
     <visual>
-      <origin rpy="0 0 0" xyz="0.2 0 0.1"/>
+      <origin rpy="0 1.570796 0 " xyz="0 0 0.01275"/>
       <geometry>
-        <box size="0.2 0.2 0.2"/>
-      </geometry>
-      <material name="gray"/>
-    </visual>
-    <visual>
-      <origin rpy="0 0 0" xyz="-0.2 0 0.1"/>
-      <geometry>
-        <box size="0.2 0.2 0.2"/>
-      </geometry>
-      <material name="gray"/>
-    </visual>
-    <visual>
-      <origin rpy="0 1.570796 0 " xyz="0 0 0.1"/>
-      <geometry>
-        <cylinder length="0.2" radius="0.05"/>
+        <cylinder length="0.02" radius="0.005"/>
       </geometry>
       <material name="black"/>
     </visual>
   </link>
   
   <joint name="base-roll" type="revolute">
-    <origin rpy="0 0 0" xyz="0 0 0.1"/>
+    <origin rpy="0 0 0" xyz="0 0 0.01275"/>
     <parent link="base"/>
     <child link="board"/>
     <axis xyz="1 0 0"/>
@@ -56,55 +42,107 @@
 
   <link name="board">
     <visual>
-      <origin rpy="0.785398 0 0" xyz="0 0 0.8485"/>
+      <origin rpy="0.785398 0 0" xyz="0 0 0.1031"/>
       <geometry>
-        <box size="0.2 1.2 1.2"/>
+        <box size="0.018 0.1458 0.1458"/>
       </geometry>
       <material name="Aquamarine"/>
     </visual>
     
     <inertial>
-      <mass value="1"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.00102" iyz="0.0" izz="1.0"/>
+      <mass value="0.070"/>
+      <inertia ixx="1.45e-4" ixy="0.0" ixz="0.0" iyy="7.36e-5" iyz="0.0" izz="7.36e-5"/>
     </inertial>
 
     <collision>
-      <origin rpy="0.785398 0 0" xyz="0 0 0.8485"/>
+      <origin rpy="0.785398 0 0" xyz="0 0 0.1031"/>
       <geometry>
-        <box size="0.2 1.2 1.2"/>
+        <box size="0.018 0.1458 0.1458"/>
       </geometry>
     </collision>
   </link>
 
-  <joint name="motor-roll" type="revolute">
-    <origin rpy="0 0 0" xyz="0.2 0 0.8485"/>
+  <joint name="motor-fix" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.021 0.0 0.1031"/>
     <parent link="board"/>
     <child link="motor"/>
-    <axis xyz="1 0 0"/>
-  </joint>
+  </joint> 
 
   <link name="motor">
     <visual>
       <origin rpy="0 1.570796 0" xyz="0 0 0"/>
       <geometry>
-        <cylinder length="0.2" radius="0.5"/>
+        <cylinder length="0.0385" radius="0.0372"/>
       </geometry>
       <material name="black"/>
     </visual>
     
-    <visual>
-      <origin rpy="0 0 0" xyz="0.1 0 0.4"/>
-      <geometry>
-        <cylinder length="0.02" radius="0.05"/>
-      </geometry>
-      <material name="Aquamarine"/>
-    </visual>
-
-     <inertial>
+    <inertial>
       <mass value="0.335"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.00005" iyz="0.0" izz="1.0"/>
+      <inertia ixx="1.45e-4" ixy="0.0" ixz="0.0" iyy="7.36e-5" iyz="0.0" izz="7.36e-5"/>
     </inertial>
   </link>
+
+
+  <joint name="wheel-roll" type="revolute">
+    <origin rpy="0 0 0" xyz="0.009 0 0.1031"/>
+    <parent link="board"/>
+    <child link="wheel-rod"/>
+    <axis xyz="1 0 0"/>
+  
+  </joint>
+
+  <link name="wheel-rod">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.015 0 0"/>
+      <geometry>
+        <box size="0.018 0.2 0.018"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="wheel-1" type="fixed">
+    <origin rpy="0 0 0" xyz="0.015 0.1 0.0"/>
+    <parent link="wheel-rod"/>
+    <child link="wheel-ball1"/>
+  </joint>
+
+  <link name="wheel-ball1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 0"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="2.85e-5" ixy="0.0" ixz="0.0" iyy="2.85e-5" iyz="0.0" izz="0.046"/>
+    </inertial>
+  </link> 
+
+  <joint name="wheel-2" type="fixed">
+    <origin rpy="0 0 0" xyz="0.015 -0.1 0.0"/>
+    <parent link="wheel-rod"/>
+    <child link="wheel-ball2"/>
+  </joint>
+
+  <link name="wheel-ball2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 0"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="2.85e-5" ixy="0.0" ixz="0.0" iyy="2.85e-5" iyz="0.0" izz="0.046"/>
+    </inertial>
+  </link> 
 
   
   

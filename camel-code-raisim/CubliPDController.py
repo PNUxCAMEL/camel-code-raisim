@@ -28,12 +28,13 @@ class CubliPDController(PDController):
     def updateState(self):
         self.position = self.robot.getQ()
         self.velocity = self.robot.getQD()           
+        self.motorV = self.robot.getMotorVelocity()          
 
     # override
     def computeControlInput(self):
         self.positionError = self.desiredPosition - self.position
         self.differentialError = self.desiredVelocity - self.velocity
-        self.torque = self.PGain * self.positionError + self.DGain * self.differentialError
+        self.torque = -self.PGain * self.positionError - self.DGain * self.differentialError
         print(self.torque)
     # override
     def setControlInput(self):
@@ -61,3 +62,6 @@ class CubliPDController(PDController):
 
     def getInputTorque(self):
         return self.torque
+
+    def getMotorVelocity(self):
+        return self.motorV
